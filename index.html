@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>深夜娃娃机 · Claw Machine</title>
+  <script type="module" crossorigin src="./assets/index-8gO09fzC.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/three-BosuxMeX.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-JxfjkgSE.css">
+</head>
+<body>
+  <!-- 3D 画布 -->
+  <canvas id="scene"></canvas>
+
+  <!-- 加载遮罩 -->
+  <div id="loading">
+    <div class="loading-inner">
+      <div class="loading-title">深 夜 娃 娃 机</div>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+      <div class="loading-hint">正在把玩偶倒进机器里…</div>
+    </div>
+  </div>
+
+  <!-- HUD 覆盖层 -->
+  <div id="hud" class="hidden">
+    <!-- 左上：币数 / 分数 -->
+    <div class="hud-topleft">
+      <div class="stat">
+        <span class="stat-label">币</span>
+        <span class="stat-value" id="coin-count">10</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">分数</span>
+        <span class="stat-value" id="score">0</span>
+      </div>
+      <div class="stat combo hidden" id="combo-badge">
+        <span class="stat-value">连抓 <b id="combo-count">2</b>！</span>
+      </div>
+    </div>
+
+    <!-- 右上：图鉴进度 -->
+    <div class="hud-topright">
+      <!-- 这个 0/62 是占位，hud.refreshDex() 会用 dexEntries() 的真实条数覆盖它。
+           HUD 在初始化完成前一直带 hidden，所以玩家看不到这个数 ——
+           写对只是不想在源码里留一个会误导人的数字（物种 6 种 × 10 配色
+           + 熊猫/企鹅各只出一种 = 62）。 -->
+      <div class="dex-title">图鉴 <span id="dex-progress">0/62</span></div>
+      <div class="dex-grid" id="dex-grid"></div>
+    </div>
+
+    <!-- 底部中间：操作提示 -->
+    <div class="hud-hint" id="hud-hint">
+      <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动爪子
+      <span class="sep">·</span>
+      <kbd class="wide">空格</kbd> 下钩
+      <span class="sep">·</span>
+      拖动鼠标转视角
+    </div>
+
+    <!-- 底部右侧：大按钮 -->
+    <div class="hud-actions">
+      <button id="btn-grab" class="big-btn">
+        <span class="big-btn-label">下 钩</span>
+        <span class="big-btn-sub" id="btn-grab-sub">消耗 1 币</span>
+      </button>
+    </div>
+
+    <!-- 中央大字提示 -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <!-- 结算 / 开场面板 -->
+  <div id="overlay" class="overlay hidden">
+    <div class="panel">
+      <h1 class="panel-title" id="panel-title">深夜娃娃机</h1>
+      <p class="panel-sub" id="panel-sub">投币开始，把喜欢的玩偶带回家</p>
+      <div class="panel-stats" id="panel-stats"></div>
+      <button class="panel-btn" id="panel-btn">投 币 开 始</button>
+      <p class="panel-foot">按 <kbd>~</kbd> 打开调试面板</p>
+    </div>
+  </div>
+
+  <!-- 调试面板 -->
+  <div id="debug" class="hidden"></div>
+
+</body>
+</html>
